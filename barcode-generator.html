@@ -6,6 +6,7 @@
 <title>مولّد الباركود</title>
 <style>
 *{box-sizing:border-box}body{margin:0;background:#f3f6fa;color:#17263a;font:16px/1.8 system-ui,Arial,sans-serif}main{max-width:850px;margin:48px auto;padding:24px}header{margin-bottom:24px}h1{font-size:30px;margin:0}p{margin:8px 0;color:#57677b}.tag{color:#087b73;font-size:13px;font-weight:700}.card{background:white;border:1px solid #dde5ee;border-radius:20px;padding:26px;box-shadow:0 12px 40px #17263a08}label{display:block;font-weight:650;margin-bottom:8px}.fields{display:grid;grid-template-columns:1fr 190px;gap:16px}input,select,button{font:inherit;border-radius:10px}input,select{width:100%;padding:11px;border:1px solid #bac7d5;background:white;color:inherit}input{direction:ltr;text-align:left}button{cursor:pointer;padding:9px 18px;border:1px solid #cbd5e1;background:white;color:#17263a}button:hover:not(:disabled){background:#edf5f5}button.primary{background:#087b73;color:white;border-color:#087b73}button:disabled{opacity:.4;cursor:not-allowed}:focus-visible{outline:3px solid #4db7d5;outline-offset:3px}.hint{font-size:13px;min-height:25px}#status{font-size:14px;min-height:28px;margin:12px 0}#status.error{color:#b42318}.actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:18px}.preview{margin-top:20px;padding:24px 0;border:1px dashed #cbd5e1;border-radius:12px;background:white;overflow:auto;text-align:center;direction:ltr;min-height:190px}svg{vertical-align:middle;max-width:none}#empty{padding:38px 16px;direction:rtl;color:#65758a}#result{overflow-wrap:anywhere;direction:ltr;text-align:center;font:14px/1.6 monospace;margin-top:12px}.note{font-size:13px;margin-top:20px}footer{font-size:12px;color:#64748b;margin-top:20px}a{color:#087b73}[hidden]{display:none!important}@media(max-width:600px){main{margin:16px auto;padding:14px}.card{padding:18px}.fields{grid-template-columns:1fr}h1{font-size:26px}}@media print{@page{margin:15mm}body,main,.card{margin:0;padding:0;background:white;border:0;box-shadow:none}header,form,.actions,.note,footer,#status,#result{display:none!important}.preview{border:0;margin:0;padding:0;overflow:visible}svg{max-width:100%;height:auto}body.invalid .preview{display:none}}
+textarea{width:100%;padding:12px;border:1px solid #bac7d5;border-radius:10px;font:15px/1.7 monospace;direction:ltr;text-align:left;resize:vertical}.batch{margin-top:28px;border-top:1px solid #dde5ee;padding-top:22px}.batch h2{font-size:21px;margin:0 0 12px}.batch-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:12px;margin-top:18px}.batch-item{border:1px solid #dde5ee;border-radius:10px;padding:10px;min-width:0;break-inside:avoid;text-align:center}.batch-image{overflow:auto;direction:ltr}.batch-row{font-size:12px;color:#64748b}.batch-error{color:#b42318;font-size:14px;overflow-wrap:anywhere}#batch-status{margin-top:12px}@media print{body.print-batch header,body.print-batch form,body.print-batch .preview,body.print-batch #result,body.print-batch .note,body.print-batch footer,body.print-batch #status,body.print-batch .batch-controls,body.print-batch .batch-row,body.print-batch .batch-error{display:none!important}body:not(.print-batch) .batch{display:none!important}.batch{border:0;margin:0;padding:0}.batch-grid{display:block;margin:0}.batch-item{border:0;padding:10mm 0;break-inside:avoid}.batch-image{overflow:visible}.batch-item.failed{display:none}.batch-item svg{max-width:100%;height:auto}}
 </style>
 </head>
 <body>
@@ -21,6 +22,7 @@
 <div id="result" hidden></div>
 <div class="actions"><button id="png" disabled>تنزيل PNG</button><button id="svg" disabled>تنزيل SVG</button><button id="print" disabled>طباعة</button><button id="copy" disabled>نسخ القيمة</button></div>
 <p class="note">Code 128 يدعم هنا الحروف الإنجليزية والأرقام والرموز القابلة للطباعة، ولا يدعم النص العربي مباشرة. حافظ على الهوامش البيضاء حول الباركود عند عرضه أو طباعته. للباركود الطويل، مرّر المعاينة أفقيًا أو نزّل الصورة كاملة.</p>
+<section class="batch" aria-label="توليد جماعي"><div class="batch-controls"><h2>باركودات من Excel</h2><label for="batch-values">الصق عمود الأرقام أو القيم هنا</label><textarea id="batch-values" rows="6" maxlength="65000" placeholder="001234&#10;001235&#10;001236" aria-describedby="batch-help"></textarea><p id="batch-help" class="hint">قيمة واحدة في كل سطر، دون عنوان العمود. يُستخدم نوع الباركود المختار بالأعلى. تُتجاهل الأسطر الفارغة وتُحفظ التكرارات والأصفار الأولية كما لُصقت. الحد الأقصى 500 قيمة.</p><p class="hint">في Excel اجعل الخلايا بتنسيق «نص» قبل إدخال أرقام تبدأ بصفر؛ الأصفار التي حذفها Excel لا يمكن استعادتها هنا.</p><div class="actions"><button id="batch-generate" class="primary" type="button">إنشاء الباركودات</button><button id="batch-print" type="button" disabled>طباعة الباركودات الصالحة</button></div><div id="batch-status" role="status" aria-live="polite"></div></div><div id="batch-results" class="batch-grid"></div></section>
 </section>
 <footer>التوليد داخل متصفحك؛ لا تُرسل القيمة إلى خادم. يلزم الإنترنت لتحميل <a href="https://github.com/lindell/JsBarcode" target="_blank" rel="noopener noreferrer">JsBarcode</a> من CDN عند فتح الصفحة.</footer>
 </main>
@@ -64,9 +66,37 @@ $('png').onclick=()=>{
  img.onerror=()=>{URL.revokeObjectURL(url);setStatus('تعذّر تصدير PNG. جرّب SVG.',true);};img.src=url;
 };
 $('copy').onclick=async()=>{if(!current)return;const value=current.value;try{await navigator.clipboard.writeText(value);setStatus('تم نسخ القيمة.');}catch(e){const temp=document.createElement('textarea');temp.value=value;temp.style.position='fixed';temp.style.opacity='0';document.body.append(temp);temp.select();let ok=false;try{ok=document.execCommand('copy');}catch(e){}temp.remove();if(ok)setStatus('تم نسخ القيمة.');else{input.value=value;input.focus();input.select();setStatus('تعذّر النسخ التلقائي. القيمة محددة؛ اضغط Ctrl+C أو انسخها يدويًا.',true);}}};
-$('print').onclick=()=>{if(current)window.print();};
+$('print').onclick=()=>{if(current){document.body.classList.remove('print-batch');window.print();}};
 $('form').onsubmit=e=>{e.preventDefault();generate();};input.addEventListener('input',generate);format.addEventListener('change',generate);
 $('example').onclick=()=>{input.value={CODE128:'TEST-123456',EAN13:'590123412345',CODE39:'TEST-1234'}[format.value];generate();};
+function parseRows(text){return text.split(/\r\n|\n|\r/).map((value,index)=>({value,row:index+1})).filter(item=>item.value.trim().length>0);}
+function invalidateBatch(){ $('batch-results').replaceChildren();$('batch-print').disabled=true;$('batch-status').textContent='اضغط إنشاء الباركودات لتحديث النتائج.'; }
+$('batch-values').addEventListener('input',invalidateBatch);
+format.addEventListener('change',invalidateBatch);
+$('batch-generate').onclick=()=>{
+ const results=$('batch-results');results.replaceChildren();$('batch-print').disabled=true;
+ const rows=parseRows($('batch-values').value),type=format.value;
+ if(!rows.length){$('batch-status').textContent='الصق قيمة واحدة على الأقل.';return;}
+ if(rows.length>500){$('batch-status').textContent='الحد الأقصى 500 قيمة في الدفعة. قسّم القائمة إلى دفعات أصغر.';return;}
+ if(typeof JsBarcode!=='function'){$('batch-status').textContent='تعذّر تحميل المكتبة. اتصل بالإنترنت وأعد تحميل الصفحة.';return;}
+ let valid=0;
+ const fragment=document.createDocumentFragment();
+ for(const item of rows){
+  const card=document.createElement('article');card.className='batch-item';
+  const label=document.createElement('div');label.className='batch-row';label.textContent='السطر '+item.row;card.append(label);
+  try{
+   if(item.value.includes('\t'))throw Error('تم لصق أكثر من عمود. انسخ عمودًا واحدًا فقط.');
+   const value=validate(item.value,type),svg=document.createElementNS('http://www.w3.org/2000/svg','svg');
+   JsBarcode(svg,value,{format:type,width:2,height:80,margin:24,displayValue:true,font:'monospace',fontSize:18,background:'#ffffff',lineColor:'#000000'});
+   svg.setAttribute('role','img');svg.setAttribute('aria-label','باركود للقيمة '+value);
+   const wrap=document.createElement('div');wrap.className='batch-image';wrap.append(svg);card.append(wrap);valid++;
+  }catch(error){card.classList.add('failed');const message=document.createElement('div');message.className='batch-error';message.textContent=item.value+' — '+(error.message||'قيمة غير صالحة.');card.append(message);}
+  fragment.append(card);
+ }
+ results.append(fragment);$('batch-print').disabled=valid===0;$('batch-status').textContent='تم إنشاء '+valid+' باركود. الصفوف غير الصالحة: '+(rows.length-valid)+'. الطباعة تشمل النتائج الصالحة فقط.';
+};
+$('batch-print').onclick=()=>{if(!$('batch-print').disabled){document.body.classList.add('print-batch');window.print();}};
+window.addEventListener('afterprint',()=>document.body.classList.remove('print-batch'));
 generate();
 </script>
 </body>
